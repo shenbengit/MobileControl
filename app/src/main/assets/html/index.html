@@ -1,0 +1,182 @@
+<!doctype html>
+<canvas id="canvas" style="border: 1px solid red;" onmousedown="mousedown(event)" onmousemove="mousemove(event)"
+        onmouseup="mouseup(event)"></canvas>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+<div>
+    <button onclick="refresh()">刷新</button>
+    <br />
+    触摸旋转方向:
+    <label><input id="angle0" name="angle" type="radio" value="" checked="checked" onclick="onradioclick(0)" />0°</label>
+    <label><input id="angle90" name="angle" type="radio" value="" onclick="onradioclick(90)" />90°</label>
+    <label><input id="angle180" name="angle" type="radio" value="" onclick="onradioclick(180)" />180°</label>
+    <label><input id="angle270" name="angle" type="radio" value="" onclick="onradioclick(270)" />270°
+    </label>
+    <br />
+    <label for="fileToUpload">选择上传文件</label>
+    <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();" />
+</div>
+</body>
+
+<script type="text/javascript">
+	var ws = new WebSocket("ws://" + window.location.hostname + ":9098")
+	var filews = new WebSocket("ws://" + window.location.hostname + ":9097")
+	var canvas = document.getElementById('canvas')
+	var g = canvas.getContext('2d')
+	var isDrag = false
+	var isConnect = false
+	var file = null
+	/**
+	 * 上一次触摸的X位置
+	 */
+	var lastPositionX = 0
+	/**
+	 * 上一次触摸的Y位置
+	 */
+	var lastPositionY = 0
+
+	function mousedown(event) {
+		if (isConnect) {
+			isDrag = true
+			lastPositionX = event.offsetX
+			lastPositionY = event.offsetY
+			var percentageX = event.offsetX / canvas.width
+			var percentageY = event.offsetY / canvas.height
+			ws.send(JSON.stringify({
+				"command": "remote_control",
+				"action": "down",
+				"percentageX": percentageX.toFixed(3),
+				"percentageY": percentageY.toFixed(3)
+			}))
+			console.log("mousedown-> x:" + percentageX.toFixed(3) + ",y:" + percentageY.toFixed(3))
+		}
+	}
+
+	function mousemove(event) {
+		if (isConnect && isDrag) {
+			if (Math.abs(lastPositionX - event.offsetX) > 10 ||
+				Math.abs(lastPositionY - event.offsetY) > 10) {
+				lastPositionX = event.offsetX
+				lastPositionY = event.offsetY
+				var percentageX = event.offsetX / canvas.width
+				var percentageY = event.offsetY / canvas.height
+
+				ws.send(JSON.stringify({
+					"command": "remote_control",
+					"action": "move",
+					"percentageX": percentageX.toFixed(3),
+					"percentageY": percentageY.toFixed(3)
+				}))
+
+				console.log("mousemove-> x:" + percentageX.toFixed(3) + ",y:" + percentageY.toFixed(3))
+			}
+		}
+	}
+
+	function mouseup(event) {
+		if (isConnect) {
+			isDrag = false
+			lastPositionX = event.offsetX
+			lastPositionY = event.offsetY
+			var percentageX = event.offsetX / canvas.width
+			var percentageY = event.offsetY / canvas.height
+			ws.send(JSON.stringify({
+				"command": "remote_control",
+				"action": "up",
+				"percentageX": percentageX.toFixed(3),
+				"percentageY": percentageY.toFixed(3)
+			}))
+			console.log("mouseup-> x:" + percentageX.toFixed(3) + ",y:" + percentageY.toFixed(3))
+		}
+	}
+
+	function onradioclick(angle) {
+		ws.send(JSON.stringify({
+			"command": "set_angle",
+			"angle": angle
+		}))
+	}
+
+	function refresh() {
+		ws.send(JSON.stringify({
+			"command": "refresh"
+		}))
+	}
+
+	function fileSelected() {
+		file = document.getElementById('fileToUpload').files[0];
+		filews.send(JSON.stringify({
+			"fileName": file.name,
+			"fileType": file.type,
+			"fileSize": file.size,
+		}))
+	}
+
+	var BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+
+	ws.binaryType = 'blob'
+	filews.binaryType = 'blob'
+
+	ws.onopen = function() {
+		isConnect = true
+		console.log('ws-onopen')
+	}
+	ws.onclose = function() {
+		isConnect = false
+		console.log('ws-onclose')
+	}
+
+	ws.onerror = function() {
+		isConnect = false
+		console.log('ws-onerror')
+	}
+
+	filews.onopen = function() {
+		console.log('filews-onopen')
+	}
+	filews.onclose = function() {
+		console.log('filews-onclose')
+	}
+
+	filews.onerror = function() {
+		console.log('filews-onerror')
+	}
+	ws.onmessage = function(message) {
+		var blob = new Blob([message.data], {
+			type: 'image/jpeg'
+		})
+		var URL = window.URL || window.webkitURL
+		var img = new Image()
+		img.onload = function() {
+			canvas.width = img.width
+			canvas.height = img.height
+			g.drawImage(img, 0, 0)
+			img.onload = null
+			img.src = BLANK_IMG
+			img = null
+			u = null
+			blob = null
+		}
+		var u = URL.createObjectURL(blob)
+		img.src = u
+	}
+	filews.onmessage = function(message) {
+		console.log("filews:" + message.data)
+		if (message.data === "start_upload") {
+			if (file) {
+				var fileReader = new FileReader()
+				fileReader.onprogress = function(event) {
+					console.log("fileReader.onprogress:" + (event.loaded / event.total) * 100 + "%")
+				}
+				fileReader.onload = function onload(event) {
+					var buffer = event.target.result
+					filews.send(buffer)
+				}
+				fileReader.readAsArrayBuffer(file)
+			}
+		}
+	}
+</script>
