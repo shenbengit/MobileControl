@@ -51,7 +51,7 @@ Android端基于minicap和minitouch实现仿Webkey远程控屏软件，需Root�
   ```shell
   adb shell getprop ro.product.cpu.abi
   ```
-  
+  根据不同的arm架构拷贝对应的文件到文件`/data/local/tmp/`目录下，[详见](https://github.com/shenbengit/MobileControl/blob/dcda9e57962a076e74ad873a84ba248dc0ba33cc/app/src/main/java/com/example/mobilecontrol/manager/MobileControlManager.kt#L179)
   - minicap
   
  
