@@ -1,5 +1,9 @@
 # MobileControl
 Android端基于Minicap和Minitouch实现仿Webkey远程控屏软件，需Root权限。
+> 此项目仅做功能展示，可能存在bug。
+## 实现功能
+- 支持查看手机画面、远程控制
+- 支持上传文件到设备
 ## 项目引入框架
 |    框架   |主要功能                          
 |:-----------:|:-----------:
@@ -10,4 +14,28 @@ Android端基于Minicap和Minitouch实现仿Webkey远程控屏软件，需Root�
 ## 项目运行效果
 浏览器输入`http://ip:9099`，**ip**为设备ip地址，确保在同一网络。
 
-![MobileControl](https://github.com/shenbengit/ArcFace/blob/master/screenshots/ArcFace01.gif)
+![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%88%AA%E5%9B%BE.png)
+
+触摸方向旋转0°
+
+![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B60%C2%B0.gif)
+
+触摸方向旋转90°
+
+![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B690%C2%B0.gif)
+
+触摸方向旋转180°
+
+![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B6180%C2%B0.gif)
+
+触摸方向旋转270°
+
+![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B6270%C2%B0.gif)
+
+查看控制台日志
+
+![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B6%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%88%AA%E5%9B%BE.png)
+
+## 目前存在问题
+- minicap或minitouch有时候会失效，具体问题是用`adb`初始化时无数据返回，已经添加`刷新`功能用于兼容。
+- 无法上传大文件，Websocket会断，经过测试100M以内可以。
