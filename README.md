@@ -12,18 +12,19 @@ Android端基于minicap和minitouch实现仿Webkey远程控屏软件，需Root�
 |[nanohttpd](https://github.com/NanoHttpd/nanohttpd)|搭建HTTP服务器
 |[Java-WebSocket](https://hub.fastgit.org/TooTallNate/Java-WebSocket)|搭建WebSocket服务器
 ## 项目运行效果
-浏览器输入`http://ip:9099`，**ip**为设备ip地址，确保在同一网络。  
-![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%88%AA%E5%9B%BE.png)  
-触摸方向旋转0°  
-![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B60%C2%B0.gif)  
-触摸方向旋转90°  
-![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B690%C2%B0.gif)  
-触摸方向旋转180°  
-![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B6180%C2%B0.gif)  
-触摸方向旋转270°  
-![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B6270%C2%B0.gif)  
-查看控制台日志  
-![MobileControl](https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B6%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%88%AA%E5%9B%BE.png)
+> 浏览器输入`http://ip:9099`，**ip**为设备ip地址，确保在同一网络。  
+<img src="https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%88%AA%E5%9B%BE.png" alt="ip" width="250px">
+
+|触摸方向旋转0°|触摸方向旋转90°|
+|:---:|:---:|
+|<img src="https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B60%C2%B0.gif" alt="触摸方向旋转0°" width="250px">|<img src="https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B690%C2%B0.gif" alt="其他操作" width="250px">|
+
+|触摸方向旋转180°|触摸方向旋转270°|
+|:---:|:---:|
+|<img src="https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B6180%C2%B0.gif" alt="触摸方向旋转180°" width="250px">|<img src="https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B6270%C2%B0.gif" alt="触摸方向旋转270°" width="250px">|
+ 
+> 查看控制台日志
+<img src="https://github.com/shenbengit/MobileControl/blob/master/screenshots/%E6%89%8B%E6%9C%BA%E6%8E%A7%E5%88%B6%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%88%AA%E5%9B%BE.png" alt="查看控制台日志" width="400px">    
 
 ## 使用流程
 ### minicap和minitouch
